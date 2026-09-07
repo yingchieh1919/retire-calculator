@@ -8,7 +8,7 @@
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(180deg, #EBF3FF 0%, #F2F2F7 30%);
+      background: linear-gradient(180deg, #F0F5FF 0%, #F7F9FC 100%);
       color: #1C1C1E;
       margin: 0;
       padding: 16px;
@@ -23,17 +23,17 @@
     }
     .header {
       text-align: center;
-      padding: 16px 0 20px 0;
+      padding: 12px 0 18px 0;
     }
     .header .icon-badge {
-      font-size: 36px;
-      margin-bottom: 8px;
+      font-size: 40px;
+      margin-bottom: 6px;
       display: inline-block;
-      animation: bounce 2s infinite ease-in-out;
+      animation: float 3s infinite ease-in-out;
     }
-    @keyframes bounce {
+    @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
+      50% { transform: translateY(-8px); }
     }
     .header h1 {
       font-size: 24px;
@@ -43,7 +43,7 @@
       letter-spacing: -0.5px;
     }
     .header p {
-      font-size: 14px;
+      font-size: 13px;
       color: #636366;
       margin: 0;
     }
@@ -51,21 +51,20 @@
       background: #FFFFFF;
       border-radius: 20px;
       padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      margin-bottom: 14px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
     }
     .section-title {
       font-size: 14px;
       font-weight: 700;
       color: #007AFF;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 16px;
     }
     .input-item {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .input-item:last-child {
       margin-bottom: 0;
@@ -84,7 +83,7 @@
     }
     input {
       width: 100%;
-      height: 48px;
+      height: 46px;
       background-color: #F2F2F7;
       border: 1.5px solid transparent;
       border-radius: 12px;
@@ -113,24 +112,48 @@
       color: #8E8E93;
       margin-top: 4px;
     }
+    /* 摺疊資產區塊風格 */
+    .toggle-asset-btn {
+      width: 100%;
+      background: #F0F6FF;
+      color: #007AFF;
+      border: 1px dashed #B3D7FF;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.2s;
+    }
+    .toggle-asset-btn:active { background: #E1EEFF; }
+    .asset-drawer {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed #E5E5EA;
+      animation: fadeIn 0.3s ease;
+    }
     .btn-calc {
       width: 100%;
       height: 54px;
-      background: linear-gradient(135deg, #007AFF 0%, #0051A8 100%);
+      background: linear-gradient(135deg, #007AFF 0%, #0056B3 100%);
       color: #FFFFFF;
       border: none;
       border-radius: 16px;
       font-size: 18px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0, 122, 255, 0.35);
-      transition: transform 0.1s ease, box-shadow 0.2s;
-      margin-top: 8px;
+      box-shadow: 0 6px 16px rgba(0, 122, 255, 0.3);
+      transition: transform 0.1s ease;
+      margin-top: 6px;
     }
-    .btn-calc:active {
-      transform: scale(0.97);
-      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
-    }
+    .btn-calc:active { transform: scale(0.97); }
+
+    /* 結果視覺與創意互動 */
     .result-box {
       display: none;
       animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -139,100 +162,106 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    .gap-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .status-emoji {
+      font-size: 50px;
+      margin-bottom: 8px;
+      display: block;
+      animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes pop {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+    .gap-title {
+      font-size: 14px;
+      color: #8E8E93;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .gap-amount {
+      font-size: 34px;
+      font-weight: 800;
+      color: #FF3B30;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .gap-comment {
+      display: inline-block;
+      background-color: #FFF2F2;
+      color: #FF3B30;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .sufficient .gap-amount { color: #34C759; }
+    .sufficient .gap-comment { background-color: #E8F8EC; color: #34C759; }
+
     .result-card {
       background: #FFFFFF;
       border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-      margin-bottom: 16px;
+      padding: 18px 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+      margin-bottom: 14px;
     }
     .result-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #E5E5EA;
-      font-size: 15px;
+      padding: 10px 0;
+      border-bottom: 1px solid #F2F2F7;
+      font-size: 14px;
       color: #3A3A3C;
     }
-    .result-row:last-child {
-      border-bottom: none;
-    }
-    .result-val {
-      font-weight: 700;
-      color: #1C1C1E;
-    }
-    .gap-card {
-      background: linear-gradient(135deg, #FF3B30 0%, #FF2D55 100%);
-      color: #FFFFFF;
-      border-radius: 20px;
-      padding: 24px 20px;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
-      margin-bottom: 16px;
-    }
-    .gap-card.sufficient {
-      background: linear-gradient(135deg, #34C759 0%, #10B981 100%);
-      box-shadow: 0 8px 20px rgba(52, 199, 89, 0.3);
-    }
-    .gap-title {
-      font-size: 14px;
-      opacity: 0.9;
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-    .gap-amount {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
+    .result-row:last-child { border-bottom: none; }
+    .result-val { font-weight: 700; color: #1C1C1E; }
+
     .agent-card {
       background: #FFFFFF;
       border-radius: 20px;
-      padding: 24px 20px;
+      padding: 20px;
       text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
     }
     .agent-avatar {
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       background: linear-gradient(135deg, #E5F1FF 0%, #CCE4FF 100%);
       color: #007AFF;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: bold;
-      margin: 0 auto 12px auto;
-      box-shadow: 0 4px 10px rgba(0, 122, 255, 0.15);
+      margin: 0 auto 10px auto;
     }
-    .agent-name {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1C1C1E;
-    }
-    .agent-desc {
-      font-size: 13px;
-      color: #636366;
-      margin: 6px 0 18px 0;
-      line-height: 1.5;
-    }
+    .agent-name { font-size: 19px; font-weight: 700; color: #1C1C1E; }
+    .agent-desc { font-size: 13px; color: #636366; margin: 6px 0 16px 0; line-height: 1.4; }
+    
     .btn-contact {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 50px;
+      height: 48px;
       border-radius: 14px;
       text-decoration: none;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
-      margin-bottom: 10px;
-      transition: all 0.2s ease;
+      margin-bottom: 8px;
     }
-    .btn-contact:active { transform: scale(0.98); }
-    .btn-line-style { background-color: #06C755; color: #FFFFFF; box-shadow: 0 4px 12px rgba(6, 199, 85, 0.25); }
+    .btn-line-style { background-color: #06C755; color: #FFFFFF; box-shadow: 0 4px 12px rgba(6, 199, 85, 0.2); }
     .btn-phone-style { background-color: #F2F2F7; color: #007AFF; }
   </style>
 </head>
@@ -241,13 +270,13 @@
 <div class="mobile-container">
   
   <div class="header">
-    <div class="icon-badge">🏖️</div>
-    <h1>理想退休生活試算</h1>
-    <p>30 秒點算個人資產，算出安心退休藍圖！</p>
+    <div class="icon-badge">🏝️</div>
+    <h1>理想退休戰力測驗</h1>
+    <p>輕鬆盤點資產，算出你的理想退休藍圖！</p>
   </div>
 
   <div class="card">
-    <div class="section-title">📅 1. 退休時程設定</div>
+    <div class="section-title">⏱️ 1. 退休時程設定</div>
     
     <div class="input-item">
       <label>您今年幾歲？</label>
@@ -275,7 +304,7 @@
   </div>
 
   <div class="card">
-    <div class="section-title">💰 2. 退休生活費預估</div>
+    <div class="section-title">💸 2. 退休生活目標</div>
 
     <div class="input-item">
       <label>退休後每月希望生活費</label>
@@ -292,72 +321,87 @@
         <input type="number" step="0.1" id="inflationRate" value="2.0">
         <span class="unit">%</span>
       </div>
-      <div class="hint">台灣長期平均約 1.5% ~ 2.5%</div>
     </div>
 
     <div class="input-item">
-      <label>退休後的理財投資報酬率</label>
+      <label>退休後的投資報酬率</label>
       <div class="input-wrapper">
         <input type="number" step="0.1" id="returnRate" value="2.0">
         <span class="unit">%</span>
       </div>
-      <div class="hint">退休後適合保守穩健理財/年金險</div>
     </div>
   </div>
 
   <div class="card">
-    <div class="section-title">🏦 3. 目前已準備資產（可填 0）</div>
+    <div class="section-title">🏦 3. 目前已累積資產</div>
 
     <div class="input-item">
-      <label>📈 股票（台股/美股/ETF現值）</label>
+      <label>已準備資金總額（估計值）</label>
       <div class="input-wrapper">
-        <input type="number" id="assetStock" value="1000000">
+        <input type="number" id="totalAssetInput" value="3000000">
         <span class="unit">元</span>
       </div>
     </div>
 
-    <div class="input-item">
-      <label>🛡️ 保險（儲蓄險/儲備投資現值）</label>
-      <div class="input-wrapper">
-        <input type="number" id="assetInsurance" value="1000000">
-        <span class="unit">元</span>
-      </div>
-    </div>
+    <!-- 可點擊展開的資產細分抽屜 -->
+    <button class="toggle-asset-btn" onclick="toggleAssets()">
+      <span id="toggleIcon">▼</span> 分項填寫（股票、保險、外幣、黃金...）
+    </button>
 
-    <div class="input-item">
-      <label>📊 基金（共同基金/債券基金）</label>
-      <div class="input-wrapper">
-        <input type="number" id="assetFund" value="500000">
-        <span class="unit">元</span>
+    <div class="asset-drawer" id="assetDrawer">
+      <div class="input-item">
+        <label>📈 股票/ETF 現值</label>
+        <div class="input-wrapper">
+          <input type="number" class="sub-asset" id="assetStock" value="1000000" oninput="sumSubAssets()">
+          <span class="unit">元</span>
+        </div>
       </div>
-    </div>
 
-    <div class="input-item">
-      <label>💱 外幣（美金/外幣定存現值）</label>
-      <div class="input-wrapper">
-        <input type="number" id="assetFx" value="300000">
-        <span class="unit">元</span>
+      <div class="input-item">
+        <label>🛡️ 保險/儲蓄險現值</label>
+        <div class="input-wrapper">
+          <input type="number" class="sub-asset" id="assetInsurance" value="1000000" oninput="sumSubAssets()">
+          <span class="unit">元</span>
+        </div>
       </div>
-    </div>
 
-    <div class="input-item">
-      <label>🪙 黃金（金條/黃金存折）</label>
-      <div class="input-wrapper">
-        <input type="number" id="assetGold" value="200000">
-        <span class="unit">元</span>
+      <div class="input-item">
+        <label>📊 基金/債券現值</label>
+        <div class="input-wrapper">
+          <input type="number" class="sub-asset" id="assetFund" value="500000" oninput="sumSubAssets()">
+          <span class="unit">元</span>
+        </div>
+      </div>
+
+      <div class="input-item">
+        <label>💱 外幣定存現值</label>
+        <div class="input-wrapper">
+          <input type="number" class="sub-asset" id="assetFx" value="300000" oninput="sumSubAssets()">
+          <span class="unit">元</span>
+        </div>
+      </div>
+
+      <div class="input-item">
+        <label>🪙 黃金現值</label>
+        <div class="input-wrapper">
+          <input type="number" class="sub-asset" id="assetGold" value="200000" oninput="sumSubAssets()">
+          <span class="unit">元</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <button class="btn-calc" onclick="calculate()">🚀 開始試算退休缺口</button>
+  <button class="btn-calc" onclick="calculate()">🎯 揭曉我的退休戰力</button>
 
   <div class="result-box" id="resultBox">
     
-    <div style="height: 20px;"></div>
+    <div style="height: 16px;"></div>
 
     <div class="gap-card" id="gapCard">
-      <div class="gap-title" id="gapTitle">預估退休金缺口</div>
+      <span class="status-emoji" id="statusEmoji">🐧</span>
+      <div class="gap-title">預估退休金缺口</div>
       <div class="gap-amount" id="gap">$0</div>
+      <div class="gap-comment" id="gapComment">戰力評價載入中...</div>
     </div>
 
     <div class="result-card">
@@ -366,19 +410,19 @@
         <span class="result-val" id="yearsToRetire">0 年</span>
       </div>
       <div class="result-row">
-        <span>退休後享受生活</span>
+        <span>退休享福年數</span>
         <span class="result-val" id="retirementYears">0 年</span>
       </div>
       <div class="result-row">
-        <span>已準備資產總計</span>
+        <span>已準備資產合計</span>
         <span class="result-val" id="totalAssetsDisplay">$0</span>
       </div>
       <div class="result-row">
-        <span>通膨後退休每月需</span>
+        <span>考慮通膨後每月需</span>
         <span class="result-val" id="futureMonthlyExpense">$0</span>
       </div>
       <div class="result-row">
-        <span>退休總共需要準備</span>
+        <span>退休總共需準備</span>
         <span class="result-val" id="totalNeeded">$0</span>
       </div>
     </div>
@@ -386,10 +430,10 @@
     <div class="agent-card">
       <div class="agent-avatar">陳</div>
       <div class="agent-name">陳瑩婕</div>
-      <div class="agent-desc">退休不是終點，是精彩生活的開始！<br>讓我陪您一起打造最安心的退休防護網。</div>
+      <div class="agent-desc">退休缺口不用怕！提前規劃，時間就是你最強大的武器。<br>歡迎加 LINE 一起打造專屬退休防護網。</div>
       
-      <a href="https://lin.ee/9ul2awK" target="_blank" class="btn-contact btn-line-style">💬 加 LINE 免費諮詢規劃</a>
-      <a href="tel:0952177846" class="btn-contact btn-phone-style">📞 直接電話諮詢 (0952-177-846)</a>
+      <a href="https://lin.ee/9ul2awK" target="_blank" class="btn-contact btn-line-style">💬 加 LINE 領取專屬規劃建議</a>
+      <a href="tel:0952177846" class="btn-contact btn-phone-style">📞 致電顧問諮詢 (0952-177-846)</a>
     </div>
 
   </div>
@@ -397,6 +441,32 @@
 </div>
 
 <script>
+  // 切換細分資產抽屜開關
+  function toggleAssets() {
+    const drawer = document.getElementById('assetDrawer');
+    const icon = document.getElementById('toggleIcon');
+    if (drawer.style.display === 'block') {
+      drawer.style.display = 'none';
+      icon.innerText = '▼';
+    } else {
+      drawer.style.display = 'block';
+      icon.innerText = '▲';
+      sumSubAssets(); // 展開時自動計算一次
+    }
+  }
+
+  // 細分資產自動加總填入主框
+  function sumSubAssets() {
+    const stock = parseFloat(document.getElementById('assetStock').value) || 0;
+    const insurance = parseFloat(document.getElementById('assetInsurance').value) || 0;
+    const fund = parseFloat(document.getElementById('assetFund').value) || 0;
+    const fx = parseFloat(document.getElementById('assetFx').value) || 0;
+    const gold = parseFloat(document.getElementById('assetGold').value) || 0;
+
+    const total = stock + insurance + fund + fx + gold;
+    document.getElementById('totalAssetInput').value = total;
+  }
+
   function calculate() {
     const currentAge = parseFloat(document.getElementById('currentAge').value) || 0;
     const retireAge = parseFloat(document.getElementById('retireAge').value) || 0;
@@ -405,14 +475,7 @@
     const inflationRate = (parseFloat(document.getElementById('inflationRate').value) || 0) / 100;
     const returnRate = (parseFloat(document.getElementById('returnRate').value) || 0) / 100;
 
-    // 讀取各項細分資產並加總
-    const stock = parseFloat(document.getElementById('assetStock').value) || 0;
-    const insurance = parseFloat(document.getElementById('assetInsurance').value) || 0;
-    const fund = parseFloat(document.getElementById('assetFund').value) || 0;
-    const fx = parseFloat(document.getElementById('assetFx').value) || 0;
-    const gold = parseFloat(document.getElementById('assetGold').value) || 0;
-
-    const existingFunds = stock + insurance + fund + fx + gold;
+    const existingFunds = parseFloat(document.getElementById('totalAssetInput').value) || 0;
 
     const yearsToRetire = Math.max(0, retireAge - currentAge);
     const retirementYears = Math.max(0, lifeExpectancy - retireAge);
@@ -439,16 +502,25 @@
 
     const gapElement = document.getElementById('gap');
     const gapCard = document.getElementById('gapCard');
-    const gapTitle = document.getElementById('gapTitle');
+    const emoji = document.getElementById('statusEmoji');
+    const comment = document.getElementById('gapComment');
 
     if (gap > 0) {
-      gapTitle.innerText = '預估退休金缺口';
       gapElement.innerText = '$' + Math.round(gap).toLocaleString();
       gapCard.className = 'gap-card';
+
+      if (gap > 10000000) {
+        emoji.innerText = '🐧💦';
+        comment.innerText = '⚠️ 通膨怪獸有點威脅！需要加速理財進度囉';
+      } else {
+        emoji.innerText = '🐕💪';
+        comment.innerText = '📈 還差一口氣！再稍微優化規劃就能完美退休';
+      }
     } else {
-      gapTitle.innerText = '🎉 太棒了！您的準備非常充足';
-      gapElement.innerText = '目前無缺口';
       gapCard.className = 'gap-card sufficient';
+      emoji.innerText = '🍾🎉';
+      gapElement.innerText = '無缺口';
+      comment.innerText = '🏆 太棒了！您的退休戰力指數爆表';
     }
 
     const resultBox = document.getElementById('resultBox');
