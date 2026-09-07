@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>退休金缺口試算器</title>
+  <style>
+    body { font-family: sans-serif; max-width: 500px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+    .input-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input { width: 100%; padding: 8px; box-sizing: border-box; }
+    button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+    .result { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 4px; }
+    .highlight { font-size: 20px; font-weight: bold; color: #d9534f; }
+  </style>
+</head>
+<body>
+  <h2>退休金缺口試算器</h2>
+  <div class="input-group">
+    <label>預計退休年齡：</label>
+    <input type="number" id="retireAge" value="65">
+  </div>
+  <div class="input-group">
+    <label>預估退休後預期壽命（歲）：</label>
+    <input type="number" id="lifeExpectancy" value="85">
+  </div>
+  <div class="input-group">
+    <label>退休後每月預估生活費 ($)：</label>
+    <input type="number" id="monthlyExpense" value="50000">
+  </div>
+  <div class="input-group">
+    <label>預估已準備/已知來源（勞保勞退等總額 $）：</label>
+    <input type="number" id="existingFunds" value="3000000">
+  </div>
+  <button onclick="calculate()">開始試算缺口</button>
+
+  <div class="result" id="resultBox" style="display:none;">
+    <p>退休後生活年數：<span id="years">0</span> 年</p>
+    <p>退休總需資金：$<span id="totalNeeded">0</span></p>
+    <p>退休金缺口：<span class="highlight" id="gap">$0</span></p>
+  </div>
+
+  <script>
+    function calculate() {
+      const retireAge = parseFloat(document.getElementById('retireAge').value) || 0;
+      const lifeExpectancy = parseFloat(document.getElementById('lifeExpectancy').value) || 0;
+      const monthlyExpense = parseFloat(document.getElementById('monthlyExpense').value) || 0;
+      const existingFunds = parseFloat(document.getElementById('existingFunds').value) || 0;
+
+      const years = Math.max(0, lifeExpectancy - retireAge);
+      const totalNeeded = years * monthlyExpense * 12;
+      const gap = totalNeeded - existingFunds;
+
+      document.getElementById('years').innerText = years;
+      document.getElementById('totalNeeded').innerText = totalNeeded.toLocaleString();
+      
+      const gapElement = document.getElementById('gap');
+      if (gap > 0) {
+        gapElement.innerText = '$' + gap.toLocaleString();
+        gapElement.style.color = '#d9534f';
+      } else {
+        gapElement.innerText = '準備充足，無缺口！';
+        gapElement.style.color = '#5cb85c';
+      }
+      
+      document.getElementById('resultBox').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
