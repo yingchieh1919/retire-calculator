@@ -3,68 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>退休金缺口試算器</title>
+  <title>退休金缺口精準試算器</title>
   <style>
-    body { font-family: sans-serif; max-width: 500px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; max-width: 550px; margin: 20px auto; padding: 20px; background-color: #f8f9fa; color: #333; }
+    .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+    h2 { color: #1a365d; text-align: center; margin-top: 0; font-size: 22px; margin-bottom: 20px; }
     .input-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input { width: 100%; padding: 8px; box-sizing: border-box; }
-    button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
-    .result { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 4px; }
-    .highlight { font-size: 20px; font-weight: bold; color: #d9534f; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: #4a5568; }
+    input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 15px; outline: none; transition: border-color 0.2s; }
+    input:focus { border-color: #3182ce; }
+    .unit-text { font-size: 12px; color: #718096; margin-top: 4px; }
+    button.btn-calc { width: 100%; padding: 12px; background-color: #2b6cb0; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
+    button.btn-calc:hover { background-color: #2c5282; }
+    .result-box { display: none; margin-top: 25px; padding: 20px; background-color: #ebf8ff; border-radius: 8px; border: 1px solid #bee3f8; }
+    .result-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
+    .result-row.highlight-row { font-size: 18px; font-weight: bold; margin-top: 15px; padding-top: 15px; border-top: 2px dashed #cbd5e0; }
+    .gap-amount { color: #e53e3e; }
+    .agent-card { background: #ffffff; border: 2px solid #3182ce; border-radius: 10px; padding: 20px; text-align: center; margin-top: 25px; }
+    .agent-title { font-size: 14px; color: #718096; font-weight: bold; }
+    .agent-name { font-size: 20px; font-weight: bold; color: #2d3748; margin: 5px 0 15px 0; }
+    .contact-btn { display: inline-block; width: 100%; padding: 10px; margin-bottom: 8px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; text-align: center; }
+    .btn-line { background-color: #06c755; color: white; }
+    .btn-phone { background-color: #edf2f7; color: #2d3748; border: 1px solid #cbd5e0; }
   </style>
 </head>
 <body>
-  <h2>退休金缺口試算器</h2>
+
+<div class="card">
+  <h2>退休金缺口精準試算器</h2>
+  
   <div class="input-group">
-    <label>預計退休年齡：</label>
+    <label>1. 目前年齡 (歲)</label>
+    <input type="number" id="currentAge" value="35">
+  </div>
+
+  <div class="input-group">
+    <label>2. 預計退休年齡 (歲)</label>
     <input type="number" id="retireAge" value="65">
   </div>
+
   <div class="input-group">
-    <label>預估退休後預期壽命（歲）：</label>
+    <label>3. 預估退休後壽命 (歲)</label>
     <input type="number" id="lifeExpectancy" value="85">
   </div>
+
   <div class="input-group">
-    <label>退休後每月預估生活費 ($)：</label>
+    <label>4. 目前預期退休後每月生活費 (現值 $)</label>
     <input type="number" id="monthlyExpense" value="50000">
   </div>
+
   <div class="input-group">
-    <label>預估已準備/已知來源（勞保勞退等總額 $）：</label>
+    <label>5. 預估平均預期通膨率 (%)</label>
+    <input type="number" step="0.1" id="inflationRate" value="2.0">
+    <div class="unit-text">建議參考台灣長期通膨率約 1.5% - 2.5%</div>
+  </div>
+
+  <div class="input-group">
+    <label>6. 退休後預期投資報酬率 (%)</label>
+    <input type="number" step="0.1" id="returnRate" value="2.0">
+    <div class="unit-text">退休後資金保守理財/年金險之預期報酬率</div>
+  </div>
+
+  <div class="input-group">
+    <label>7. 預估已準備資金總額 (勞保勞退/儲蓄/投資現值 $)</label>
     <input type="number" id="existingFunds" value="3000000">
   </div>
-  <button onclick="calculate()">開始試算缺口</button>
 
-  <div class="result" id="resultBox" style="display:none;">
-    <p>退休後生活年數：<span id="years">0</span> 年</p>
-    <p>退休總需資金：$<span id="totalNeeded">0</span></p>
-    <p>退休金缺口：<span class="highlight" id="gap">$0</span></p>
+  <button class="btn-calc" onclick="calculate()">開始計算退休缺口</button>
+
+  <div class="result-box" id="resultBox">
+    <div class="result-row">
+      <span>距離退休剩餘：</span>
+      <span id="yearsToRetire">0 年</span>
+    </div>
+    <div class="result-row">
+      <span>退休後生活年數：</span>
+      <span id="retirementYears">0 年</span>
+    </div>
+    <div class="result-row">
+      <span>通膨調整後退休每月生活費：</span>
+      <span id="futureMonthlyExpense" style="font-weight:bold;">$0</span>
+    </div>
+    <div class="result-row">
+      <span>退休總需準備資金：</span>
+      <span id="totalNeeded" style="font-weight:bold;">$0</span>
+    </div>
+    <div class="result-row highlight-row">
+      <span>預估退休金缺口：</span>
+      <span class="gap-amount" id="gap">$0</span>
+    </div>
+
+    <!-- 保險業務員個人名片與諮詢按鈕（請自行修改下方姓名與連結） -->
+    <div class="agent-card">
+      <div class="agent-title">專業退休規劃顧問</div>
+      <div class="agent-name">【請替換為您的姓名】</div>
+      <p style="font-size:12px; color:#666; margin-bottom:15px;">退休規劃需要量身打造！歡迎點擊下方按鈕，免費預約專屬保單與退休防護網規劃。</p>
+      <a href="https://line.me/ti/p/【您的LINE_ID】" target="_blank" class="contact-btn btn-line">📲 加 LINE 預約免費諮詢</a>
+      <a href="tel:0912345678" class="contact-btn btn-phone">📞 致電諮詢 (0912-345-678)</a>
+    </div>
   </div>
+</div>
 
-  <script>
-    function calculate() {
-      const retireAge = parseFloat(document.getElementById('retireAge').value) || 0;
-      const lifeExpectancy = parseFloat(document.getElementById('lifeExpectancy').value) || 0;
-      const monthlyExpense = parseFloat(document.getElementById('monthlyExpense').value) || 0;
-      const existingFunds = parseFloat(document.getElementById('existingFunds').value) || 0;
+<script>
+  function calculate() {
+    const currentAge = parseFloat(document.getElementById('currentAge').value) || 0;
+    const retireAge = parseFloat(document.getElementById('retireAge').value) || 0;
+    const lifeExpectancy = parseFloat(document.getElementById('lifeExpectancy').value) || 0;
+    const monthlyExpense = parseFloat(document.getElementById('monthlyExpense').value) || 0;
+    const inflationRate = (parseFloat(document.getElementById('inflationRate').value) || 0) / 100;
+    const returnRate = (parseFloat(document.getElementById('returnRate').value) || 0) / 100;
+    const existingFunds = parseFloat(document.getElementById('existingFunds').value) || 0;
 
-      const years = Math.max(0, lifeExpectancy - retireAge);
-      const totalNeeded = years * monthlyExpense * 12;
-      const gap = totalNeeded - existingFunds;
+    const yearsToRetire = Math.max(0, retireAge - currentAge);
+    const retirementYears = Math.max(0, lifeExpectancy - retireAge);
 
-      document.getElementById('years').innerText = years;
-      document.getElementById('totalNeeded').innerText = totalNeeded.toLocaleString();
-      
-      const gapElement = document.getElementById('gap');
-      if (gap > 0) {
-        gapElement.innerText = '$' + gap.toLocaleString();
-        gapElement.style.color = '#d9534f';
-      } else {
-        gapElement.innerText = '準備充足，無缺口！';
-        gapElement.style.color = '#5cb85c';
+    // 1. 計算通膨後的未來每月生活費 = 現值 * (1 + 通膨率) ^ 距離退休年數
+    const futureMonthlyExpense = monthlyExpense * Math.pow(1 + inflationRate, yearsToRetire);
+    const futureAnnualExpense = futureMonthlyExpense * 12;
+
+    // 2. 計算退休時所需的總準備金 (考慮退休後折現率/投報率)
+    let totalNeeded = 0;
+    if (returnRate === inflationRate || returnRate === 0) {
+      totalNeeded = futureAnnualExpense * retirementYears;
+    } else {
+      for (let i = 0; i < retirementYears; i++) {
+        totalNeeded += futureAnnualExpense / Math.pow(1 + returnRate, i);
       }
-      
-      document.getElementById('resultBox').style.display = 'block';
     }
-  </script>
+
+    const gap = totalNeeded - existingFunds;
+
+    document.getElementById('yearsToRetire').innerText = yearsToRetire + ' 年';
+    document.getElementById('retirementYears').innerText = retirementYears + ' 年';
+    document.getElementById('futureMonthlyExpense').innerText = '$' + Math.round(futureMonthlyExpense).toLocaleString();
+    document.getElementById('totalNeeded').innerText = '$' + Math.round(totalNeeded).toLocaleString();
+
+    const gapElement = document.getElementById('gap');
+    if (gap > 0) {
+      gapElement.innerText = '$' + Math.round(gap).toLocaleString();
+      gapElement.style.color = '#e53e3e';
+    } else {
+      gapElement.innerText = '準備充足，無缺口！';
+      gapElement.style.color = '#38a169';
+    }
+
+    document.getElementById('resultBox').style.display = 'block';
+  }
+</script>
+
 </body>
 </html>
