@@ -77,6 +77,31 @@
       gap: 10px;
     }
 
+    /* 快捷情境按鈕組 */
+    .preset-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .preset-btn {
+      background: #FAF6F0;
+      border: 1px solid #EFE5DA;
+      border-radius: 12px;
+      padding: 8px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #6E5A4B;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .preset-btn.active {
+      background: #8C5A32;
+      color: #FFFFFF;
+      border-color: #8C5A32;
+    }
+
     .input-item {
       margin-bottom: 12px;
     }
@@ -222,6 +247,18 @@
     .sufficient .gap-amount { color: #4A7C59; }
     .sufficient .gap-comment { background-color: #EBF3ED; color: #4A7C59; }
 
+    .medical-notice {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #A37050;
+      background: #FFFBF7;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #F2E3D5;
+      text-align: left;
+      line-height: 1.4;
+    }
+
     .result-card {
       background: #FFFFFF;
       border-radius: 20px;
@@ -243,7 +280,7 @@
     .result-row:last-child { border-bottom: none; }
     .result-val { font-weight: 700; color: #362518; }
 
-    /* 投資型保單專屬方案卡片 */
+    /* 投資型保單專屬卡片 */
     .solution-card {
       background: linear-gradient(135deg, #FFFDF9 0%, #FAF2E8 100%);
       border: 1.5px solid #DCCBBA;
@@ -256,24 +293,69 @@
       font-size: 15px;
       font-weight: 800;
       color: #4A3728;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      margin-bottom: 8px;
     }
+    
+    .strategy-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin: 10px 0;
+    }
+    .tab-btn {
+      background: #FFFFFF;
+      border: 1px solid #DCCBBA;
+      border-radius: 10px;
+      padding: 6px 0;
+      font-size: 11px;
+      color: #6E5A4B;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: #4A3728;
+      color: #FFFFFF;
+      border-color: #4A3728;
+    }
+
     .solution-highlight {
       background: #FFFFFF;
       border-radius: 14px;
       padding: 14px;
       text-align: center;
       border: 1px solid #EFE5DA;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .solution-monthly-val {
       font-size: 26px;
       font-weight: 800;
       color: #8C5A32;
       margin: 4px 0;
+    }
+
+    .btn-share {
+      width: 100%;
+      background: #FAF6F0;
+      color: #4A3728;
+      border: 1px solid #DCCBBA;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .social-proof {
+      font-size: 11px;
+      color: #8C7665;
+      margin-bottom: 10px;
+      font-weight: 600;
     }
 
     .agent-card {
@@ -358,6 +440,13 @@
   <div class="card">
     <div class="section-title">☕ 1. 理想退休品味</div>
     
+    <!-- 情境快速選擇 -->
+    <div class="preset-group">
+      <div class="preset-btn" onclick="setPreset(35000, this)">🍵 平實微甜<br>$3.5萬/月</div>
+      <div class="preset-btn active" onclick="setPreset(50000, this)">☕ 質感濃醇<br>$5.0萬/月</div>
+      <div class="preset-btn" onclick="setPreset(80000, this)">🍨 奢華特調<br>$8.0萬/月</div>
+    </div>
+
     <div class="grid-2">
       <div class="input-item">
         <label>現年齡</label>
@@ -384,8 +473,8 @@
       </div>
     </div>
 
-    <button class="toggle-drawer-btn" onclick="toggleDrawer('paramDrawer', 'paramIcon')">
-      <span id="paramIcon">⚙️</span> 調整通膨與投資試算參數
+    <button class="toggle-drawer-btn" onclick="toggleDrawer('paramDrawer')">
+      <span id="paramIcon">⚙️</span> 調整通膨與壽命參數
     </button>
 
     <div class="drawer-content" id="paramDrawer">
@@ -412,14 +501,6 @@
           </div>
         </div>
       </div>
-      <!-- 投資型保單累積期預期報酬率 -->
-      <div class="input-item" style="margin-top:10px;">
-        <label>📈 投資型保單預期年化報酬率</label>
-        <div class="input-wrapper">
-          <input type="number" step="0.1" id="investmentReturnRate" value="6.0">
-          <span class="unit">%</span>
-        </div>
-      </div>
     </div>
 
   </div>
@@ -435,7 +516,7 @@
       </div>
     </div>
 
-    <button class="toggle-drawer-btn" onclick="toggleDrawer('assetDrawer', 'assetIcon')">
+    <button class="toggle-drawer-btn" onclick="toggleDrawer('assetDrawer')">
       <span id="assetIcon">▼</span> 分項詳細填寫 (股票、保險、外幣...)
     </button>
 
@@ -490,6 +571,10 @@
       <div class="gap-title">預估退休金缺口</div>
       <div class="gap-amount" id="gap">$0</div>
       <div class="gap-comment" id="gapComment">試算分析中...</div>
+      
+      <div class="medical-notice">
+        💡 <b>提示：</b>此試算僅計入基礎生活費。建議額外預留 200~300 萬作為突發醫療與長期照護防禦金。
+      </div>
     </div>
 
     <div class="result-card">
@@ -515,31 +600,41 @@
       </div>
     </div>
 
-    <!-- 💡 投資型保單專屬試算方案 -->
+    <!-- 💡 投資型保單專屬解方（帶情境切換） -->
     <div class="solution-card" id="solutionCard">
-      <div class="solution-title">💡 咖啡館推薦特調：投資型保單解方</div>
-      <div style="font-size: 13px; color: #6E5A4B; line-height: 1.5;">
-        透過兼具「壽險保障」與「基金/ETF投資」的投資型保單，利用長期複利效果輕鬆補足缺口：
+      <div class="solution-title">💡 咖啡館特調解方：投資型保單方案</div>
+      <div style="font-size: 12px; color: #6E5A4B; line-height: 1.4;">
+        兼具「壽險高額保障」與「基金/ETF 投資」，選擇適合您的資產配置風格：
       </div>
       
+      <div class="strategy-tabs">
+        <div class="tab-btn" onclick="updateInvestmentRate(0.04, this)">保守型 (4%)</div>
+        <div class="tab-btn active" onclick="updateInvestmentRate(0.06, this)">穩健型 (6%)</div>
+        <div class="tab-btn" onclick="updateInvestmentRate(0.08, this)">積極型 (8%)</div>
+      </div>
+
       <div class="solution-highlight">
-        <div style="font-size: 12px; color: #8C7665;">每月定期定額投入約</div>
+        <div style="font-size: 12px; color: #8C7665;">定期定額每月僅需投入</div>
         <div class="solution-monthly-val" id="monthlyInvestment">$0 / 月</div>
-        <div style="font-size: 12px; color: #8C5A32; font-weight: 600;" id="investmentDetail">假設年化報酬率 6.0% 試算</div>
+        <div style="font-size: 11px; color: #8C5A32; font-weight: 600;" id="investmentDetail">假設年化報酬率 6.0% 試算</div>
       </div>
     </div>
 
+    <!-- 一鍵複製報告 -->
+    <button class="btn-share" onclick="copyReport()">📋 一鍵複製試算報告</button>
+
     <div class="agent-card">
+      <div class="social-proof">☕ 已有 500+ 位朋友在此完成專屬退休藍圖</div>
       <img src="avatar.jpg" class="agent-avatar-img" alt="陳瑩婕店長" onerror="this.src='https://picsum.photos/200'">
       <div class="agent-name">陳瑩婕</div>
       <div class="agent-subtitle">保險咖啡館 駐店顧問</div>
       
       <div class="agent-desc">
         ☕「一杯咖啡，守護更好的明天」<br>
-        投資型保單如何挑選優質基金與配置標的？歡迎點擊下方加 LINE，免費為您量身規劃！
+        想了解哪種投資標的適合自己？歡迎預約免費諮詢，讓我為您品嘗與規劃！
       </div>
       
-      <a href="https://lin.ee/9ul2awK" target="_blank" class="btn-contact btn-line-style">💬 加 LINE 預約咖啡館免費諮詢</a>
+      <a href="https://lin.ee/9ul2awK" target="_blank" id="lineBtn" class="btn-contact btn-line-style">💬 加 LINE 預約咖啡館免費諮詢</a>
       <a href="tel:0952177846" class="btn-contact btn-phone-style">📞 電話諮詢 (0952-177-846)</a>
     </div>
 
@@ -548,13 +643,20 @@
 </div>
 
 <script>
-  function toggleDrawer(drawerId, iconId) {
+  let currentGap = 0;
+  let currentYearsToRetire = 0;
+  let selectedInvRate = 0.06;
+
+  function setPreset(amount, btnElement) {
+    document.getElementById('monthlyExpense').value = amount;
+    const btns = document.querySelectorAll('.preset-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+  }
+
+  function toggleDrawer(drawerId) {
     const drawer = document.getElementById(drawerId);
-    if (drawer.style.display === 'block') {
-      drawer.style.display = 'none';
-    } else {
-      drawer.style.display = 'block';
-    }
+    drawer.style.display = (drawer.style.display === 'block') ? 'none' : 'block';
   }
 
   function sumSubAssets() {
@@ -564,8 +666,23 @@
     const fx = parseFloat(document.getElementById('assetFx').value) || 0;
     const gold = parseFloat(document.getElementById('assetGold').value) || 0;
 
-    const total = stock + insurance + fund + fx + gold;
-    document.getElementById('totalAssetInput').value = total;
+    document.getElementById('totalAssetInput').value = stock + insurance + fund + fx + gold;
+  }
+
+  // 數字滾動動畫
+  function animateValue(id, start, end, duration, isCurrency = true) {
+    const obj = document.getElementById(id);
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const val = Math.floor(progress * (end - start) + start);
+      obj.innerText = (isCurrency ? '$' : '') + val.toLocaleString() + (isCurrency ? '' : ' 年');
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
   }
 
   function calculate() {
@@ -575,14 +692,13 @@
     const monthlyExpense = parseFloat(document.getElementById('monthlyExpense').value) || 0;
     const inflationRate = (parseFloat(document.getElementById('inflationRate').value) || 0) / 100;
     const returnRate = (parseFloat(document.getElementById('returnRate').value) || 0) / 100;
-    const invReturnRate = (parseFloat(document.getElementById('investmentReturnRate').value) || 6.0) / 100;
 
     const existingFunds = parseFloat(document.getElementById('totalAssetInput').value) || 0;
 
-    const yearsToRetire = Math.max(0, retireAge - currentAge);
+    currentYearsToRetire = Math.max(0, retireAge - currentAge);
     const retirementYears = Math.max(0, lifeExpectancy - retireAge);
 
-    const futureMonthlyExpense = monthlyExpense * Math.pow(1 + inflationRate, yearsToRetire);
+    const futureMonthlyExpense = monthlyExpense * Math.pow(1 + inflationRate, currentYearsToRetire);
     const futureAnnualExpense = futureMonthlyExpense * 12;
 
     let totalNeeded = 0;
@@ -594,25 +710,25 @@
       }
     }
 
-    const gap = totalNeeded - existingFunds;
+    currentGap = Math.max(0, totalNeeded - existingFunds);
 
-    document.getElementById('yearsToRetire').innerText = yearsToRetire + ' 年';
+    // 填入基礎數據與動畫
+    document.getElementById('yearsToRetire').innerText = currentYearsToRetire + ' 年';
     document.getElementById('retirementYears').innerText = retirementYears + ' 年';
     document.getElementById('totalAssetsDisplay').innerText = '$' + Math.round(existingFunds).toLocaleString();
     document.getElementById('futureMonthlyExpense').innerText = '$' + Math.round(futureMonthlyExpense).toLocaleString();
     document.getElementById('totalNeeded').innerText = '$' + Math.round(totalNeeded).toLocaleString();
 
-    const gapElement = document.getElementById('gap');
     const gapCard = document.getElementById('gapCard');
     const emoji = document.getElementById('statusEmoji');
     const comment = document.getElementById('gapComment');
     const solutionCard = document.getElementById('solutionCard');
 
-    if (gap > 0) {
-      gapElement.innerText = '$' + Math.round(gap).toLocaleString();
+    if (currentGap > 0) {
+      animateValue('gap', 0, Math.round(currentGap), 800);
       gapCard.className = 'gap-card';
 
-      if (gap > 10000000) {
+      if (currentGap > 10000000) {
         emoji.innerText = '☕💦';
         comment.innerText = '通膨壓力有點大！建議提早特調防護網';
       } else {
@@ -620,34 +736,56 @@
         comment.innerText = '再微調一下資產比例，就能輕鬆達標';
       }
 
-      // 計算投資型保單定期定額月繳金額
-      // 年利率轉換為月利率
-      const r = invReturnRate / 12;
-      const n = yearsToRetire * 12;
-      let monthlyInv = 0;
-      
-      if (r > 0 && n > 0) {
-        monthlyInv = gap * r / (Math.pow(1 + r, n) - 1);
-      } else if (n > 0) {
-        monthlyInv = gap / n;
-      }
-
       solutionCard.style.display = 'block';
-      document.getElementById('monthlyInvestment').innerText = '$' + Math.round(monthlyInv).toLocaleString() + ' / 月';
-      document.getElementById('investmentDetail').innerText = `假設報酬率 ${(invReturnRate * 100).toFixed(1)}%，準備 ${yearsToRetire} 年`;
+      recalcInvestmentSolution();
 
     } else {
       gapCard.className = 'gap-card sufficient';
       emoji.innerText = '☕🎉';
-      gapElement.innerText = '無缺口';
+      document.getElementById('gap').innerText = '無缺口';
       comment.innerText = '太棒了！您的退休品味與準備相當完美';
-      solutionCard.style.display = 'none'; // 無缺口時隱藏方案
+      solutionCard.style.display = 'none';
     }
+
+    // 更新 LINE 連結訊息帶入
+    const lineBtn = document.getElementById('lineBtn');
+    const msg = encodeURIComponent(`店長你好，我剛剛在保險咖啡館完成試算：\n距離退休還有 ${currentYearsToRetire} 年，預估缺口為 $${Math.round(currentGap).toLocaleString()} 元，想了解投資型保單專屬規劃！`);
+    lineBtn.href = `https://lin.ee/9ul2awK?text=${msg}`;
 
     const resultBox = document.getElementById('resultBox');
     resultBox.style.display = 'block';
-    
     resultBox.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function updateInvestmentRate(rate, btnElement) {
+    selectedInvRate = rate;
+    const btns = document.querySelectorAll('.tab-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+    recalcInvestmentSolution();
+  }
+
+  function recalcInvestmentSolution() {
+    const r = selectedInvRate / 12;
+    const n = currentYearsToRetire * 12;
+    let monthlyInv = 0;
+
+    if (r > 0 && n > 0) {
+      monthlyInv = currentGap * r / (Math.pow(1 + r, n) - 1);
+    } else if (n > 0) {
+      monthlyInv = currentGap / n;
+    }
+
+    animateValue('monthlyInvestment', 0, Math.round(monthlyInv), 500);
+    document.getElementById('investmentDetail').innerText = `假設報酬率 ${(selectedInvRate * 100).toFixed(1)}%，準備 ${currentYearsToRetire} 年`;
+  }
+
+  function copyReport() {
+    const text = `【保險咖啡館 - 退休試算報告】\n☕ 距離退休：${document.getElementById('yearsToRetire').innerText}\n💰 現有資產：${document.getElementById('totalAssetsDisplay').innerText}\n📊 退休總需求：${document.getElementById('totalNeeded').innerText}\n🚨 預估缺口：${document.getElementById('gap').innerText}\n💡 投資型保單解方：${document.getElementById('monthlyInvestment').innerText} (報酬率 ${(selectedInvRate*100).toFixed(1)}% 試算)`;
+    
+    navigator.clipboard.writeText(text).then(() => {
+      alert('試算報告已複製！可以貼給家人討論或傳給店長諮詢囉 ☕');
+    });
   }
 </script>
 
