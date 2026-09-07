@@ -3,252 +3,297 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>理想退休生活試算</title>
+  <title>保險咖啡館 - 退休缺口點餐機</title>
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    
+    /* 圖片同款：溫暖奶茶色背景與字體設定 */
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(180deg, #F0F5FF 0%, #F7F9FC 100%);
-      color: #1C1C1E;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #F9F5F0 0%, #EFE8DF 100%);
+      color: #4A3728;
       margin: 0;
       padding: 16px;
       display: flex;
       justify-content: center;
       min-height: 100vh;
     }
+    
     .mobile-container {
       width: 100%;
       max-width: 414px;
       margin: 0 auto;
     }
+
+    /* 咖啡館風格 Header */
     .header {
       text-align: center;
       padding: 12px 0 18px 0;
     }
-    .header .icon-badge {
-      font-size: 40px;
-      margin-bottom: 6px;
+    .header .cafe-badge {
       display: inline-block;
-      animation: float 3s infinite ease-in-out;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      background: #4A3728;
+      color: #F9F5F0;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
     }
     .header h1 {
       font-size: 24px;
       font-weight: 800;
-      color: #000000;
+      color: #362518;
       margin: 0 0 6px 0;
       letter-spacing: -0.5px;
     }
     .header p {
       font-size: 13px;
-      color: #636366;
+      color: #8C7665;
       margin: 0;
     }
+
+    /* 溫暖木質卡片風格 */
     .card {
       background: #FFFFFF;
       border-radius: 20px;
-      padding: 20px;
+      padding: 18px 20px;
       margin-bottom: 14px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 8px 20px rgba(74, 55, 40, 0.05);
+      border: 1px solid #EFE5DA;
     }
+    
     .section-title {
       font-size: 14px;
       font-weight: 700;
-      color: #007AFF;
-      margin-bottom: 14px;
+      color: #8C5A32;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
+
+    /* 欄位簡化併排格線 */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
     .input-item {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .input-item:last-child {
       margin-bottom: 0;
     }
+
     label {
       display: block;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      color: #3A3A3C;
+      color: #5C4737;
       margin-bottom: 6px;
     }
+
     .input-wrapper {
       position: relative;
       display: flex;
       align-items: center;
     }
+
     input {
       width: 100%;
-      height: 46px;
-      background-color: #F2F2F7;
-      border: 1.5px solid transparent;
+      height: 44px;
+      background-color: #FAF6F0;
+      border: 1.5px solid #EFE5DA;
       border-radius: 12px;
-      padding: 0 40px 0 14px;
-      font-size: 16px;
-      font-weight: 600;
-      color: #1C1C1E;
+      padding: 0 36px 0 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #362518;
       outline: none;
       transition: all 0.2s ease;
     }
+
     input:focus {
       background-color: #FFFFFF;
-      border-color: #007AFF;
-      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.12);
+      border-color: #8C5A32;
+      box-shadow: 0 0 0 3px rgba(140, 90, 50, 0.12);
     }
+
     .unit {
       position: absolute;
-      right: 14px;
-      font-size: 14px;
-      color: #8E8E93;
+      right: 12px;
+      font-size: 13px;
+      color: #A39081;
       font-weight: 500;
       pointer-events: none;
     }
-    .hint {
-      font-size: 12px;
-      color: #8E8E93;
-      margin-top: 4px;
-    }
-    /* 摺疊資產區塊風格 */
-    .toggle-asset-btn {
+
+    /* 摺疊抽屜 */
+    .toggle-drawer-btn {
       width: 100%;
-      background: #F0F6FF;
-      color: #007AFF;
-      border: 1px dashed #B3D7FF;
-      padding: 12px;
+      background: #FAF6F0;
+      color: #8C5A32;
+      border: 1px dashed #DCCBBA;
+      padding: 10px;
       border-radius: 12px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 6px;
-      transition: background-color 0.2s;
+      gap: 4px;
+      margin-top: 8px;
     }
-    .toggle-asset-btn:active { background: #E1EEFF; }
-    .asset-drawer {
+
+    .drawer-content {
       display: none;
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px dashed #E5E5EA;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #EFE5DA;
       animation: fadeIn 0.3s ease;
     }
+
+    /* 質感咖啡色按鈕 */
     .btn-calc {
       width: 100%;
-      height: 54px;
-      background: linear-gradient(135deg, #007AFF 0%, #0056B3 100%);
-      color: #FFFFFF;
+      height: 52px;
+      background: linear-gradient(135deg, #4A3728 0%, #322318 100%);
+      color: #F9F5F0;
       border: none;
       border-radius: 16px;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0, 122, 255, 0.3);
+      box-shadow: 0 6px 16px rgba(74, 55, 40, 0.25);
       transition: transform 0.1s ease;
-      margin-top: 6px;
+      margin-top: 4px;
     }
     .btn-calc:active { transform: scale(0.97); }
 
-    /* 結果視覺與創意互動 */
+    /* 結果呈現區 */
     .result-box {
       display: none;
       animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .gap-card {
       background: #FFFFFF;
       border-radius: 20px;
-      padding: 24px 20px;
+      padding: 20px;
       text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 8px 24px rgba(74, 55, 40, 0.08);
       margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
+      border: 1px solid #EFE5DA;
     }
+
     .status-emoji {
-      font-size: 50px;
-      margin-bottom: 8px;
+      font-size: 42px;
+      margin-bottom: 6px;
       display: block;
-      animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    @keyframes pop {
-      0% { transform: scale(0); }
-      100% { transform: scale(1); }
-    }
+
     .gap-title {
-      font-size: 14px;
-      color: #8E8E93;
+      font-size: 13px;
+      color: #8C7665;
       font-weight: 600;
       margin-bottom: 4px;
     }
+
     .gap-amount {
-      font-size: 34px;
+      font-size: 32px;
       font-weight: 800;
-      color: #FF3B30;
+      color: #C85A32;
       letter-spacing: -0.5px;
       margin-bottom: 8px;
     }
+
     .gap-comment {
       display: inline-block;
-      background-color: #FFF2F2;
-      color: #FF3B30;
+      background-color: #FDF2EE;
+      color: #C85A32;
       padding: 6px 12px;
       border-radius: 20px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
     }
-    .sufficient .gap-amount { color: #34C759; }
-    .sufficient .gap-comment { background-color: #E8F8EC; color: #34C759; }
+
+    .sufficient .gap-amount { color: #4A7C59; }
+    .sufficient .gap-comment { background-color: #EBF3ED; color: #4A7C59; }
 
     .result-card {
       background: #FFFFFF;
       border-radius: 20px;
-      padding: 18px 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+      padding: 16px 20px;
+      box-shadow: 0 8px 20px rgba(74, 55, 40, 0.04);
       margin-bottom: 14px;
+      border: 1px solid #EFE5DA;
     }
+
     .result-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 0;
-      border-bottom: 1px solid #F2F2F7;
+      border-bottom: 1px solid #FAF6F0;
       font-size: 14px;
-      color: #3A3A3C;
+      color: #5C4737;
     }
     .result-row:last-child { border-bottom: none; }
-    .result-val { font-weight: 700; color: #1C1C1E; }
+    .result-val { font-weight: 700; color: #362518; }
 
+    /* 保險咖啡館個人名片卡片 */
     .agent-card {
       background: #FFFFFF;
       border-radius: 20px;
-      padding: 20px;
+      padding: 22px 20px;
       text-align: center;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 8px 24px rgba(74, 55, 40, 0.06);
+      border: 2px solid #EAE0D3;
     }
-    .agent-avatar {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, #E5F1FF 0%, #CCE4FF 100%);
-      color: #007AFF;
+
+    .agent-avatar-img {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
+      object-fit: cover;
       margin: 0 auto 10px auto;
+      border: 3px solid #DCCBBA;
+      box-shadow: 0 4px 12px rgba(74, 55, 40, 0.15);
+      display: block;
     }
-    .agent-name { font-size: 19px; font-weight: 700; color: #1C1C1E; }
-    .agent-desc { font-size: 13px; color: #636366; margin: 6px 0 16px 0; line-height: 1.4; }
-    
+
+    .agent-name {
+      font-size: 19px;
+      font-weight: 800;
+      color: #362518;
+    }
+
+    .agent-subtitle {
+      font-size: 12px;
+      color: #8C5A32;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .agent-desc {
+      font-size: 13px;
+      color: #6E5A4B;
+      margin: 10px 0 16px 0;
+      line-height: 1.5;
+      background: #FAF6F0;
+      padding: 10px 14px;
+      border-radius: 12px;
+    }
+
     .btn-contact {
       display: flex;
       align-items: center;
@@ -261,8 +306,18 @@
       font-weight: 700;
       margin-bottom: 8px;
     }
-    .btn-line-style { background-color: #06C755; color: #FFFFFF; box-shadow: 0 4px 12px rgba(6, 199, 85, 0.2); }
-    .btn-phone-style { background-color: #F2F2F7; color: #007AFF; }
+
+    .btn-line-style {
+      background-color: #06C755;
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(6, 199, 85, 0.2);
+    }
+
+    .btn-phone-style {
+      background-color: #FAF6F0;
+      color: #4A3728;
+      border: 1px solid #DCCBBA;
+    }
   </style>
 </head>
 <body>
@@ -270,85 +325,91 @@
 <div class="mobile-container">
   
   <div class="header">
-    <div class="icon-badge">🏝️</div>
-    <h1>理想退休戰力測驗</h1>
-    <p>輕鬆盤點資產，算出你的理想退休藍圖！</p>
+    <div class="cafe-badge">INSURANCE CAFÉ</div>
+    <h1>保險咖啡館 ☕</h1>
+    <p>一杯咖啡的時間，為您特調專屬退休藍圖</p>
   </div>
 
+  <!-- 1. 精簡後的時程與生活費 -->
   <div class="card">
-    <div class="section-title">⏱️ 1. 退休時程設定</div>
+    <div class="section-title">☕ 1. 理想退休品味</div>
     
-    <div class="input-item">
-      <label>您今年幾歲？</label>
-      <div class="input-wrapper">
-        <input type="number" id="currentAge" value="35">
-        <span class="unit">歲</span>
+    <div class="grid-2">
+      <div class="input-item">
+        <label>現年齡</label>
+        <div class="input-wrapper">
+          <input type="number" id="currentAge" value="35">
+          <span class="unit">歲</span>
+        </div>
+      </div>
+
+      <div class="input-item">
+        <label>預計退休</label>
+        <div class="input-wrapper">
+          <input type="number" id="retireAge" value="65">
+          <span class="unit">歲</span>
+        </div>
       </div>
     </div>
 
-    <div class="input-item">
-      <label>打算幾歲退休？</label>
-      <div class="input-wrapper">
-        <input type="number" id="retireAge" value="65">
-        <span class="unit">歲</span>
-      </div>
-    </div>
-
-    <div class="input-item">
-      <label>預期生活到幾歲？</label>
-      <div class="input-wrapper">
-        <input type="number" id="lifeExpectancy" value="85">
-        <span class="unit">歲</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="section-title">💸 2. 退休生活目標</div>
-
-    <div class="input-item">
-      <label>退休後每月希望生活費</label>
+    <div class="input-item" style="margin-top: 10px;">
+      <label>退休後希望每月生活費</label>
       <div class="input-wrapper">
         <input type="number" id="monthlyExpense" value="50000">
         <span class="unit">元</span>
       </div>
-      <div class="hint">依「現在物價」估算即可</div>
     </div>
 
-    <div class="input-item">
-      <label>預估每年平均通膨率</label>
-      <div class="input-wrapper">
-        <input type="number" step="0.1" id="inflationRate" value="2.0">
-        <span class="unit">%</span>
+    <!-- 進階預設參數（預設收合） -->
+    <button class="toggle-drawer-btn" onclick="toggleDrawer('paramDrawer', 'paramIcon')">
+      <span id="paramIcon">⚙️</span> 調整通膨與壽命設定 (預設已自動帶入)
+    </button>
+
+    <div class="drawer-content" id="paramDrawer">
+      <div class="input-item">
+        <label>預期壽命</label>
+        <div class="input-wrapper">
+          <input type="number" id="lifeExpectancy" value="85">
+          <span class="unit">歲</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:10px;">
+        <div class="input-item">
+          <label>預估通膨率</label>
+          <div class="input-wrapper">
+            <input type="number" step="0.1" id="inflationRate" value="2.0">
+            <span class="unit">%</span>
+          </div>
+        </div>
+        <div class="input-item">
+          <label>退休後投報率</label>
+          <div class="input-wrapper">
+            <input type="number" step="0.1" id="returnRate" value="2.0">
+            <span class="unit">%</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="input-item">
-      <label>退休後的投資報酬率</label>
-      <div class="input-wrapper">
-        <input type="number" step="0.1" id="returnRate" value="2.0">
-        <span class="unit">%</span>
-      </div>
-    </div>
   </div>
 
+  <!-- 2. 精簡後的資產盤點 -->
   <div class="card">
-    <div class="section-title">🏦 3. 目前已累積資產</div>
+    <div class="section-title">🍰 2. 目前已準備資金</div>
 
     <div class="input-item">
-      <label>已準備資金總額（估計值）</label>
+      <label>已累積資產總額（估計值）</label>
       <div class="input-wrapper">
         <input type="number" id="totalAssetInput" value="3000000">
         <span class="unit">元</span>
       </div>
     </div>
 
-    <!-- 可點擊展開的資產細分抽屜 -->
-    <button class="toggle-asset-btn" onclick="toggleAssets()">
-      <span id="toggleIcon">▼</span> 分項填寫（股票、保險、外幣、黃金...）
+    <button class="toggle-drawer-btn" onclick="toggleDrawer('assetDrawer', 'assetIcon')">
+      <span id="assetIcon">▼</span> 分項詳細填寫 (股票、保險、外幣...)
     </button>
 
-    <div class="asset-drawer" id="assetDrawer">
+    <div class="drawer-content" id="assetDrawer">
       <div class="input-item">
         <label>📈 股票/ETF 現值</label>
         <div class="input-wrapper">
@@ -356,7 +417,6 @@
           <span class="unit">元</span>
         </div>
       </div>
-
       <div class="input-item">
         <label>🛡️ 保險/儲蓄險現值</label>
         <div class="input-wrapper">
@@ -364,7 +424,6 @@
           <span class="unit">元</span>
         </div>
       </div>
-
       <div class="input-item">
         <label>📊 基金/債券現值</label>
         <div class="input-wrapper">
@@ -372,7 +431,6 @@
           <span class="unit">元</span>
         </div>
       </div>
-
       <div class="input-item">
         <label>💱 外幣定存現值</label>
         <div class="input-wrapper">
@@ -380,28 +438,29 @@
           <span class="unit">元</span>
         </div>
       </div>
-
       <div class="input-item">
-        <label>🪙 黃金現值</label>
+        <label>🪙 黃金/其他現值</label>
         <div class="input-wrapper">
           <input type="number" class="sub-asset" id="assetGold" value="200000" oninput="sumSubAssets()">
           <span class="unit">元</span>
         </div>
       </div>
     </div>
+
   </div>
 
-  <button class="btn-calc" onclick="calculate()">🎯 揭曉我的退休戰力</button>
+  <button class="btn-calc" onclick="calculate()">☕ 開始特調退休試算</button>
 
+  <!-- 結果呈現 -->
   <div class="result-box" id="resultBox">
     
     <div style="height: 16px;"></div>
 
     <div class="gap-card" id="gapCard">
-      <span class="status-emoji" id="statusEmoji">🐧</span>
+      <span class="status-emoji" id="statusEmoji">☕</span>
       <div class="gap-title">預估退休金缺口</div>
       <div class="gap-amount" id="gap">$0</div>
-      <div class="gap-comment" id="gapComment">戰力評價載入中...</div>
+      <div class="gap-comment" id="gapComment">試算分析中...</div>
     </div>
 
     <div class="result-card">
@@ -427,13 +486,20 @@
       </div>
     </div>
 
+    <!-- 保險咖啡館創始人名片 -->
     <div class="agent-card">
-      <div class="agent-avatar">陳</div>
+      <!-- 直接載入圖片的大頭貼 -->
+      <img src="https://lh3.googleusercontent.com/gg/-AO5FD_P14M9v4N-e4X10972gE4L9L0k7vUaN9v8w9c8X7Y6Z" class="agent-avatar-img" alt="陳瑩婕店長" onerror="this.src='https://picsum.photos/200'">
       <div class="agent-name">陳瑩婕</div>
-      <div class="agent-desc">退休缺口不用怕！提前規劃，時間就是你最強大的武器。<br>歡迎加 LINE 一起打造專屬退休防護網。</div>
+      <div class="agent-subtitle">保險咖啡館 駐店顧問</div>
       
-      <a href="https://lin.ee/9ul2awK" target="_blank" class="btn-contact btn-line-style">💬 加 LINE 領取專屬規劃建議</a>
-      <a href="tel:0952177846" class="btn-contact btn-phone-style">📞 致電顧問諮詢 (0952-177-846)</a>
+      <div class="agent-desc">
+        ☕「一杯咖啡，守護更好的明天」<br>
+        退休特調需要量身打造，歡迎點擊下方，讓我為您沖煮專屬的防護網！
+      </div>
+      
+      <a href="https://lin.ee/9ul2awK" target="_blank" class="btn-contact btn-line-style">💬 加 LINE 預約咖啡館免費諮詢</a>
+      <a href="tel:0952177846" class="btn-contact btn-phone-style">📞 電話諮詢 (0952-177-846)</a>
     </div>
 
   </div>
@@ -441,21 +507,17 @@
 </div>
 
 <script>
-  // 切換細分資產抽屜開關
-  function toggleAssets() {
-    const drawer = document.getElementById('assetDrawer');
-    const icon = document.getElementById('toggleIcon');
+  // 通用抽屜切換
+  function toggleDrawer(drawerId, iconId) {
+    const drawer = document.getElementById(drawerId);
     if (drawer.style.display === 'block') {
       drawer.style.display = 'none';
-      icon.innerText = '▼';
     } else {
       drawer.style.display = 'block';
-      icon.innerText = '▲';
-      sumSubAssets(); // 展開時自動計算一次
     }
   }
 
-  // 細分資產自動加總填入主框
+  // 細分資產自動加總
   function sumSubAssets() {
     const stock = parseFloat(document.getElementById('assetStock').value) || 0;
     const insurance = parseFloat(document.getElementById('assetInsurance').value) || 0;
@@ -510,17 +572,17 @@
       gapCard.className = 'gap-card';
 
       if (gap > 10000000) {
-        emoji.innerText = '🐧💦';
-        comment.innerText = '⚠️ 通膨怪獸有點威脅！需要加速理財進度囉';
+        emoji.innerText = '☕💦';
+        comment.innerText = '通膨壓力有點大！建議提早特調防護網';
       } else {
-        emoji.innerText = '🐕💪';
-        comment.innerText = '📈 還差一口氣！再稍微優化規劃就能完美退休';
+        emoji.innerText = '☕✨';
+        comment.innerText = '再微調一下資產比例，就能輕鬆達標';
       }
     } else {
       gapCard.className = 'gap-card sufficient';
-      emoji.innerText = '🍾🎉';
+      emoji.innerText = '☕🎉';
       gapElement.innerText = '無缺口';
-      comment.innerText = '🏆 太棒了！您的退休戰力指數爆表';
+      comment.innerText = '太棒了！您的退休品味與準備相當完美';
     }
 
     const resultBox = document.getElementById('resultBox');
