@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>保險咖啡館 - 退休缺口點餐機</title>
+  <!-- html2canvas 用於生成質感結果圖片 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     
@@ -334,6 +336,13 @@
       margin: 4px 0;
     }
 
+    .btn-action-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
     .btn-share {
       width: 100%;
       background: #FAF6F0;
@@ -344,11 +353,14 @@
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      margin-bottom: 14px;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 6px;
+      transition: background-color 0.2s ease;
+    }
+    .btn-share:hover {
+      background: #F0E8DD;
     }
 
     .social-proof {
@@ -425,11 +437,20 @@
       color: #4A3728;
       border: 1px solid #DCCBBA;
     }
+
+    .sub-asset-notice {
+      font-size: 11px;
+      color: #8C5A32;
+      background: #FAF2E8;
+      padding: 6px 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
 
-<div class="mobile-container">
+<div class="mobile-container" id="reportCaptureArea">
   
   <div class="header">
     <div class="cafe-badge">INSURANCE CAFÉ</div>
@@ -468,8 +489,17 @@
     <div class="input-item" style="margin-top: 10px;">
       <label>退休後希望每月生活費</label>
       <div class="input-wrapper">
-        <input type="number" id="monthlyExpense" value="50000">
+        <input type="number" id="monthlyExpense" value="50000" oninput="clearPresetActive()">
         <span class="unit">元</span>
+      </div>
+    </div>
+
+    <!-- 🌟 勞保 / 勞退等基礎年金扣抵 -->
+    <div class="input-item" style="margin-top: 10px;">
+      <label>預估勞保/勞退月退金 (政府基本盤)</label>
+      <div class="input-wrapper">
+        <input type="number" id="pensionMonthly" value="20000">
+        <span class="unit">元/月</span>
       </div>
     </div>
 
@@ -511,7 +541,7 @@
     <div class="input-item">
       <label>已累積資產總額（估計值）</label>
       <div class="input-wrapper">
-        <input type="number" id="totalAssetInput" value="3000000">
+        <input type="number" id="totalAssetInput" value="3000000" oninput="onMainAssetInput()">
         <span class="unit">元</span>
       </div>
     </div>
@@ -521,6 +551,7 @@
     </button>
 
     <div class="drawer-content" id="assetDrawer">
+      <div class="sub-asset-notice">💡 填寫下方子項目將會自動連動加總至資產總額</div>
       <div class="input-item">
         <label>📈 股票/ETF 現值</label>
         <div class="input-wrapper">
@@ -568,12 +599,12 @@
 
     <div class="gap-card" id="gapCard">
       <span class="status-emoji" id="statusEmoji">☕</span>
-      <div class="gap-title">預估退休金缺口</div>
+      <div class="gap-title">預估退休金缺口 (已扣除年金基本盤)</div>
       <div class="gap-amount" id="gap">$0</div>
       <div class="gap-comment" id="gapComment">試算分析中...</div>
       
       <div class="medical-notice">
-        💡 <b>提示：</b>此試算僅計入基礎生活費。建議額外預留 200~300 萬作為突發醫療與長期照護防禦金。
+        💡 <b>提示：</b>此試算已扣除政府勞保/勞退等基本盤。建議額外預留 200~300 萬作為突發醫療與長期照護防禦金。
       </div>
     </div>
 
@@ -591,16 +622,16 @@
         <span class="result-val" id="totalAssetsDisplay">$0</span>
       </div>
       <div class="result-row">
-        <span>考慮通膨後每月需</span>
-        <span class="result-val" id="futureMonthlyExpense">$0</span>
+        <span>通膨後每月實質需補足</span>
+        <span class="result-val" id="futureNetMonthlyExpense">$0</span>
       </div>
       <div class="result-row">
-        <span>退休總共需準備</span>
+        <span>退休總缺口需求</span>
         <span class="result-val" id="totalNeeded">$0</span>
       </div>
     </div>
 
-    <!-- 💡 投資型保單專屬解方（帶情境切換） -->
+    <!-- 投資型保單專屬解方 -->
     <div class="solution-card" id="solutionCard">
       <div class="solution-title">💡 咖啡館特調解方：投資型保單方案</div>
       <div style="font-size: 12px; color: #6E5A4B; line-height: 1.4;">
@@ -620,8 +651,11 @@
       </div>
     </div>
 
-    <!-- 一鍵複製報告 -->
-    <button class="btn-share" onclick="copyReport()">📋 一鍵複製試算報告</button>
+    <!-- 雙按鈕 (一鍵複製報告 + 下載咖啡單圖片) -->
+    <div class="btn-action-group">
+      <button class="btn-share" onclick="copyReport()">📋 複製文字報告</button>
+      <button class="btn-share" onclick="generateImageReport()" style="background:#FAF2E8; border-color:#C85A32; color:#8C5A32;">🖼️ 下載結果圖卡</button>
+    </div>
 
     <div class="agent-card">
       <div class="social-proof">☕ 已有 500+ 位朋友在此完成專屬退休藍圖</div>
@@ -634,8 +668,8 @@
         想了解哪種投資標的適合自己？歡迎預約免費諮詢，讓我為您品嘗與規劃！
       </div>
       
-      <a href="https://lin.ee/9ul2awK" target="_blank" id="lineBtn" class="btn-contact btn-line-style">💬 加 LINE 預約咖啡館免費諮詢</a>
-      <a href="tel:0952177846" class="btn-contact btn-phone-style">📞 電話諮詢 (0952-177-846)</a>
+      <a href="https://lin.ee/9ul2awK" target="_blank" id="lineBtn" class="btn-contact btn-line-style" onclick="trackGAEvent('line_click')">💬 加 LINE 預約咖啡館免費諮詢</a>
+      <a href="tel:0952177846" class="btn-contact btn-phone-style" onclick="trackGAEvent('phone_click')">📞 電話諮詢 (0952-177-846)</a>
     </div>
 
   </div>
@@ -654,6 +688,11 @@
     btnElement.classList.add('active');
   }
 
+  function clearPresetActive() {
+    const btns = document.querySelectorAll('.preset-btn');
+    btns.forEach(b => b.classList.remove('active'));
+  }
+
   function toggleDrawer(drawerId) {
     const drawer = document.getElementById(drawerId);
     drawer.style.display = (drawer.style.display === 'block') ? 'none' : 'block';
@@ -669,15 +708,26 @@
     document.getElementById('totalAssetInput').value = stock + insurance + fund + fx + gold;
   }
 
-  // 數字滾動動畫
+  function onMainAssetInput() {
+    const subInputs = document.querySelectorAll('.sub-asset');
+    subInputs.forEach(input => input.value = '');
+  }
+
+  // 平滑緩動數字動畫 (Cubic Easing)
   function animateValue(id, start, end, duration, isCurrency = true) {
     const obj = document.getElementById(id);
     let startTimestamp = null;
+    
+    const easeOutCubic = (x) => 1 - Math.pow(1 - x, 3);
+
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      const val = Math.floor(progress * (end - start) + start);
+      const easedProgress = easeOutCubic(progress);
+      const val = Math.floor(easedProgress * (end - start) + start);
+      
       obj.innerText = (isCurrency ? '$' : '') + val.toLocaleString() + (isCurrency ? '' : ' 年');
+      
       if (progress < 1) {
         window.requestAnimationFrame(step);
       }
@@ -690,6 +740,7 @@
     const retireAge = parseFloat(document.getElementById('retireAge').value) || 0;
     const lifeExpectancy = parseFloat(document.getElementById('lifeExpectancy').value) || 0;
     const monthlyExpense = parseFloat(document.getElementById('monthlyExpense').value) || 0;
+    const pensionMonthly = parseFloat(document.getElementById('pensionMonthly').value) || 0;
     const inflationRate = (parseFloat(document.getElementById('inflationRate').value) || 0) / 100;
     const returnRate = (parseFloat(document.getElementById('returnRate').value) || 0) / 100;
 
@@ -698,16 +749,19 @@
     currentYearsToRetire = Math.max(0, retireAge - currentAge);
     const retirementYears = Math.max(0, lifeExpectancy - retireAge);
 
-    const futureMonthlyExpense = monthlyExpense * Math.pow(1 + inflationRate, currentYearsToRetire);
-    const futureAnnualExpense = futureMonthlyExpense * 12;
+    // 計算扣除月退金後的個人自籌缺口（考慮通膨）
+    const netMonthlyTarget = Math.max(0, monthlyExpense - pensionMonthly);
+    const futureNetMonthlyExpense = netMonthlyTarget * Math.pow(1 + inflationRate, currentYearsToRetire);
+    const futureAnnualExpense = futureNetMonthlyExpense * 12;
 
+    // 精準折現精算公式 (實質報酬率 Real Rate of Return)
     let totalNeeded = 0;
-    if (returnRate === inflationRate || returnRate === 0) {
+    const realRate = (1 + returnRate) / (1 + inflationRate) - 1;
+
+    if (Math.abs(realRate) < 0.0001) {
       totalNeeded = futureAnnualExpense * retirementYears;
     } else {
-      for (let i = 0; i < retirementYears; i++) {
-        totalNeeded += futureAnnualExpense / Math.pow(1 + returnRate, i);
-      }
+      totalNeeded = futureAnnualExpense * ((1 - Math.pow(1 + realRate, -retirementYears)) / realRate);
     }
 
     currentGap = Math.max(0, totalNeeded - existingFunds);
@@ -716,7 +770,7 @@
     document.getElementById('yearsToRetire').innerText = currentYearsToRetire + ' 年';
     document.getElementById('retirementYears').innerText = retirementYears + ' 年';
     document.getElementById('totalAssetsDisplay').innerText = '$' + Math.round(existingFunds).toLocaleString();
-    document.getElementById('futureMonthlyExpense').innerText = '$' + Math.round(futureMonthlyExpense).toLocaleString();
+    document.getElementById('futureNetMonthlyExpense').innerText = '$' + Math.round(futureNetMonthlyExpense).toLocaleString();
     document.getElementById('totalNeeded').innerText = '$' + Math.round(totalNeeded).toLocaleString();
 
     const gapCard = document.getElementById('gapCard');
@@ -747,14 +801,16 @@
       solutionCard.style.display = 'none';
     }
 
-    // 更新 LINE 連結訊息帶入
+    // LINE 帶入試算報告訊息優化
     const lineBtn = document.getElementById('lineBtn');
-    const msg = encodeURIComponent(`店長你好，我剛剛在保險咖啡館完成試算：\n距離退休還有 ${currentYearsToRetire} 年，預估缺口為 $${Math.round(currentGap).toLocaleString()} 元，想了解投資型保單專屬規劃！`);
+    const msg = encodeURIComponent(`店長你好，我剛剛在保險咖啡館完成試算：\n\n☕ 距離退休：${currentYearsToRetire} 年\n💰 現有資產：$${Math.round(existingFunds).toLocaleString()} 元\n🚨 預估缺口：$${Math.round(currentGap).toLocaleString()} 元\n\n想了解投資型保單專屬規劃與建議！`);
     lineBtn.href = `https://lin.ee/9ul2awK?text=${msg}`;
 
     const resultBox = document.getElementById('resultBox');
     resultBox.style.display = 'block';
     resultBox.scrollIntoView({ behavior: 'smooth' });
+
+    trackGAEvent('calculate_success');
   }
 
   function updateInvestmentRate(rate, btnElement) {
@@ -781,11 +837,37 @@
   }
 
   function copyReport() {
-    const text = `【保險咖啡館 - 退休試算報告】\n☕ 距離退休：${document.getElementById('yearsToRetire').innerText}\n💰 現有資產：${document.getElementById('totalAssetsDisplay').innerText}\n📊 退休總需求：${document.getElementById('totalNeeded').innerText}\n🚨 預估缺口：${document.getElementById('gap').innerText}\n💡 投資型保單解方：${document.getElementById('monthlyInvestment').innerText} (報酬率 ${(selectedInvRate*100).toFixed(1)}% 試算)`;
+    const text = `【保險咖啡館 ☕ 退休試算報告】\n------------------------------\n⏳ 距離退休：${document.getElementById('yearsToRetire').innerText}\n💰 現有資產：${document.getElementById('totalAssetsDisplay').innerText}\n📊 退休總需求：${document.getElementById('totalNeeded').innerText}\n🚨 預估缺口：${document.getElementById('gap').innerText}\n💡 投資型保單解方：${document.getElementById('monthlyInvestment').innerText} (報酬率 ${(selectedInvRate*100).toFixed(1)}% 試算)\n------------------------------\n👉 快來保險咖啡館，品嚐專屬您的退休特調！`;
     
     navigator.clipboard.writeText(text).then(() => {
       alert('試算報告已複製！可以貼給家人討論或傳給店長諮詢囉 ☕');
     });
+  }
+
+  // 產出圖卡下載功能
+  function generateImageReport() {
+    const captureArea = document.getElementById('reportCaptureArea');
+    alert('正在為您生成專屬「退休藍圖圖卡」，請稍候... ☕');
+    
+    html2canvas(captureArea, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#F9F5F0'
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = '保險咖啡館-退休試算報告.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  // 預留埋點與轉換追蹤函式 (GA4 / Pixel)
+  function trackGAEvent(eventName) {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, {
+        'event_category': 'RetirementCalculator'
+      });
+    }
   }
 </script>
 
